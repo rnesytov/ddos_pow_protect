@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: server.Dockerfile
     ports:
-      - "8000:8000"
+      - "8080:8080"
 
   client:
     build:
@@ -14,4 +14,4 @@ services:
     depends_on:
       - server
     environment:
-      - HOST=server
+      - ADDR=server:8080

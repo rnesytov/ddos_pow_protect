@@ -25,18 +25,9 @@ Run this to start server and client:
 docker-compose up
 ```
 
-After starting the server you can also test it with `telnet` or `nc` by connecting to port 8080.
-
 # Notes
 This is a PoC implementation. It is not production ready. It is not secure. It is not optimized. It is not tested.
 There are many things that can be improved. For example:
-- Rewrite to compiled language (C, C++, Rust, Go, etc.) for better performance.
-- Rewrite protocol to use binary messages instead of text and add additional metadata to messages (version, timestamp, etc.).
+- Use TLS to protect connection.
+- Improve protocol to add more information about the client (for logging and debugging purpose) and version (to support compatibility in future).
 - Test with different devices and different Scrypt parameters to find the best balance between performance and security.
-
-
-I tested algorithm with current Scrypt parameters (N=1024, r=1, p=1) and different difficulties on my laptop (M1 Max). Here are the results:
-- D=3 – avg=0.83
-- D=2 – avg=0.05
-
-So on modern devices it is not so hard to solve PoW with difficulty 2. But it is still can be hard for IoT devices.

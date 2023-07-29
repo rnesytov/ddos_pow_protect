@@ -1,13 +1,19 @@
-FROM python:3.11-slim-bookworm
+FROM golang:1.20-alpine as builder
 
-RUN apt update && apt install -y build-essential libssl-dev
+WORKDIR /build
 
-WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
 
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
+COPY cmd /build/cmd
+COPY internal /build/internal
 
-COPY pow.py pow.py
-COPY client.py client.py
+RUN CGO_ENABLED=0 GOOS=linux go build -o /client cmd/client/main.go
 
-CMD ["python3", "client.py"]
+FROM alpine
+
+WORKDIR /
+
+COPY --from=builder /client /client
+
+ENTRYPOINT ["/client"]
